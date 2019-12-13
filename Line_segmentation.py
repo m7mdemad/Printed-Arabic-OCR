@@ -102,5 +102,7 @@ def segment_paragragh(img):
                 cv2.imwrite('test/l'+str(i)+'w'+str(j)+'c'+str(k)+'.png', chars[i][j][k])
 
     return res
-            
-#segment_paragragh()
+ 
+
+img = cv2.imread('image.png',0)           
+segment_paragragh(img)

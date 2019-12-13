@@ -426,12 +426,12 @@ def filter_cutting_points(skeleton, word, sr, baseLine, maxTransitionIndex, most
             valid_sr.append(sr[i])
             i += 1
 
-    word[maxTransitionIndex, 0:word.shape[1]] = 255
-    word[baseLine, 0:word.shape[1]] = 255
-    for i in range(len(valid_sr)):
-        word[0:word.shape[0], valid_sr[i][3]] = 255
-    print(valid_sr)
-    cv2.imwrite('zoo.png', word)
+    # word[maxTransitionIndex, 0:word.shape[1]] = 255
+    # word[baseLine, 0:word.shape[1]] = 255
+    # for i in range(len(valid_sr)):
+    #     word[0:word.shape[0], valid_sr[i][3]] = 255
+    # print(valid_sr)
+    # cv2.imwrite('zoo.png', word)
 
     valid_sr.append(sr[len(sr) - 1])
     return valid_sr
