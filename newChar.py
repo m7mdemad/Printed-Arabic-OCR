@@ -78,10 +78,12 @@ def get_line_info(line):
             
     max_indeces_list.sort()
     print(max_indeces_list)
+    
+    
+    bw_img_line[bl_line, 0:bw_img_line.shape[1]] = 255
+    cv2.imwrite('ziko.png', bw_img_line)
+    
     return bl_line, maxTransitionIndex_line, bw_img_line, max_indeces_list[1]
-
-
-
 
 
 def baseLine(hp):
@@ -120,6 +122,15 @@ def max_transitions(img, bl):
     return maxTransitionIndex
 
 
+def cut_chars(bw_img, valid_cutting_points, bl_line):
+    chars = []
+    start, end = get_stroke_cropping_indeces(horizintal_projection(bw_img), bl_line)
+    for i in range(len(valid_cutting_points) - 1):
+        if valid_cutting_points[i+1][3] == valid_cutting_points[i][3]:
+            continue
+        chars.append(bw_img[start:end, valid_cutting_points[i+1][3]:valid_cutting_points[i][3]])
+    return chars
+
 # main
 def get_chars2(img, line, bl_line, maxTransitionIndex_line, bw_img_line, second_peak):
     #                               FOR WORD
@@ -138,7 +149,7 @@ def get_chars2(img, line, bl_line, maxTransitionIndex_line, bw_img_line, second_
     bw_img = img
     for i in range(bw_img.shape[0]):
         for j in range(bw_img.shape[1]):
-            if bw_img[i,j] <= 150:
+            if bw_img[i,j] <= 165:
                 bw_img[i,j] = 255
             else:
                 bw_img[i,j] = 0
@@ -147,14 +158,42 @@ def get_chars2(img, line, bl_line, maxTransitionIndex_line, bw_img_line, second_
 
     # filter cutting points
     valid_cutting_points = filter_cutting_points(skeleton, bw_img, cutting_points, bl_line, maxTransitionIndex, most_frequent_value, most_frequent_value_after_0, vertical_projection(bw_img), horizintal_projection(bw_img_line), second_peak)
-    print(second_peak, bl_line)
-
-    bw_img_line[9, 0:bw_img_line.shape[1]] = 255
-    cv2.imwrite('zfinal.png', bw_img_line)
+    
+    #bw_img_line[bl_line, 0:bw_img_line.shape[1]] = 255
+    #cv2.imwrite('zfinal.png', bw_img_line)
 
     # cut letters
+    chars = cut_chars(bw_img, valid_cutting_points, bl_line)
+    return chars
+    #print(len(chars))
+    #for i in range(len(chars)):
+     #   str1 = 'c'+str(i)+'.png'
+      #  cv2.imwrite(str1,chars[i])
+      
 def get_characters(lines, words):
-    original = cv2.imread('w14.png', 0)
-    line = cv2.imread('l0.png', 0)
+    original = cv2.imread('w40.png', 0)
+    line = cv2.imread('l2.png', 0)
     bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(line)
     get_chars2(original, line, bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
+    
+    chars_list = []
+    
+    #bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(lines[0])
+    #print(bl_line, maxTransitionIndex_line, bw_img_line, second_peak )
+    #word = get_chars2(words[0][0], lines[0], bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
+    #print(words[0][0].shape)
+    #print(lines[0].shape)
+    #x = lines[0]
+    #x[bl_line, 0:x.shape[1]] = 255
+    #cv2.imwrite('ziko.png', x)
+    
+    #for i in range(len(lines)):
+    #    bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(lines[i])
+    #    line_chars = []
+    #    for j in range(len(words[i])):
+    #        word = get_chars2(words[i][j], lines[i], bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
+    #        line_chars.append(word)
+
+    #    chars_list.append(line_chars)
+    
+    return chars_list
