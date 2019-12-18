@@ -197,8 +197,8 @@ def get_characters(lines, words):
     #cv2.imwrite('ziko.png', words[0][0])
     
     for i in range(len(lines)):
-        if i > 2 and i < len(lines) - 2:
-            continue
+        #if i > 2 and i < len(lines) - 2:
+        #    continue
         bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(lines[i])
         line_chars = []
         for j in range(len(words[i])):

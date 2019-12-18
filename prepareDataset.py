@@ -4,7 +4,8 @@ import os
 import glob
 import re
 from Line_segmentation import segment_paragragh
-
+from WordSegmentor import WordSegmentor
+from LineSegmentor import LineSegmentor
 
 
 img = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\s'
@@ -44,27 +45,27 @@ def prepare_dataset(imgs, chars):
             j += 1
         else:
             #return data
-            #j += 1  # skip it.
-            #count += 1
-            break
+            j += 1  # skip it.
+            count += 1
+            #break
         
-    k = len(imgs) - 1
-    j = len(chars) - 1
-    while k >= 0:
-        if j < 0:
-            break
-        if len(imgs[k]) == len(chars[j]):
-            for i in range(len(imgs[k])):
-                data.append([imgs[k][i], chars[j][i]])
-            j -= 1
-        else:
+   ## k = len(imgs) - 1
+   # j = len(chars) - 1
+   # while k >= 0:
+   #     if j < 0:
+   #         break
+   #     if len(imgs[k]) == len(chars[j]):
+   #         for i in range(len(imgs[k])):
+   #             data.append([imgs[k][i], chars[j][i]])
+   #         j -= 1
+   #     else:
             #return data
             #j += 1  # skip it.
             #count += 1
-            break
-        k -= 1
+   #         break
+   #     k -= 1
 
-     #print('no. of errors= ', count)
+    print('no. of errors= ', count)
     return data
 
 
@@ -93,6 +94,26 @@ def save_data(data, img):
     return
 
 
+def skew_correction(image):
+    gray = cv2.bitwise_not(image)
+
+    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    coords = np.column_stack(np.where(thresh > 0))
+    angle = cv2.minAreaRect(coords)[-1]
+
+    if angle < -45:
+        angle = -(90 + angle)
+    else:
+        angle = -angle
+
+    (h, w) = image.shape[:2]
+    center = (w // 2, h // 2)
+    M = cv2.getRotationMatrix2D(center, angle, 1.0)
+    rotated = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+
+    return rotated
+
+
 numbers = re.compile(r'(\d+)')
 
 
@@ -115,8 +136,17 @@ for filename in sorted(glob.glob(os.path.join(txt, '*.txt')), key=numericalSort)
         print(filename)
         text.append(_text)
 
+cnt = 0
 for i in range(len(text)):
-    lt_txt = get_char(text[i])
-    lt_img = segment_paragragh(imgs[i])
-    data = prepare_dataset(lt_img, lt_txt)
-    save_data(data,img)
+    os.chdir('C:\\Users\\H S\\PycharmProjects\\arabic_ocr')
+    img = skew_correction(imgs[i])
+    lines, lines_dil = LineSegmentor(img).segment_lines()
+    words, length = WordSegmentor(lines, lines_dil).segment_words()  
+    if length == len(text[i].split()):
+        cnt += 1
+        lt_txt = get_char(text[i])
+        lt_img = segment_paragragh(lines, words)
+        data = prepare_dataset(lt_img, lt_txt)
+        save_data(data, img) 
+    
+    print('correct images= ', cnt)

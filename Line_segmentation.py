@@ -1,30 +1,6 @@
 import cv2
 import numpy as np
 from newChar import get_characters
-import os
-# dirname = 'test'
-# os.mkdir(dirname)
-
-
-
-def skew_correction(image):
-    gray = cv2.bitwise_not(image)
-
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    coords = np.column_stack(np.where(thresh > 0))
-    angle = cv2.minAreaRect(coords)[-1]
-
-    if angle < -45:
-        angle = -(90 + angle)
-    else:
-        angle = -angle
-
-    (h, w) = image.shape[:2]
-    center = (w // 2, h // 2)
-    M = cv2.getRotationMatrix2D(center, angle, 1.0)
-    rotated = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-
-    return rotated
 
 def horizintal_projection(im):
     #im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -77,21 +53,21 @@ def get_words(lines):
     return Lines_in_words
 
 
-def segment_paragragh(img):
-    os.chdir('C:\\Users\\H S\\PycharmProjects\\arabic_ocr')
+def segment_paragragh(lines, words):
+
     # img = cv2.imread('image.png',0)
-    img = skew_correction(img)
+  #  img = skew_correction(img)
     #  Extract Lines from text
-    lines = Trim(horizintal_projection(img), img, 0, 15)
-    
+ #   lines = LineSegmentor(img).segment_lines()
+    #for i in range(len(lines)):
+    #    lines[i] = cv2.rotate(lines[i], cv2.ROTATE_90_CLOCKWISE)
     #for i in range(len(lines)):
     #    lines[i] = skew_correction(lines[i])
     #  Extract words from lines
-    words = get_words(lines)
+#    words = WordSegmentor(lines).segment_words()
 
     #  Extract letters from words
-    for i in range(len(lines)):
-        lines[i] = cv2.rotate(lines[i], cv2.ROTATE_90_CLOCKWISE)
+
     
     chars = get_characters(lines, words)
     res = []
