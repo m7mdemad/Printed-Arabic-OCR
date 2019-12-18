@@ -32,30 +32,30 @@ def pad(img):
     return border
 
 
-img = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\res\\zeen'
-dst = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\op'
+#img = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\res\\zeen'
+#dst = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\op'
 
 
-numbers = re.compile(r'(\d+)')
+#numbers = re.compile(r'(\d+)')
 
 
-def numericalSort(value):
-    parts = numbers.split(value)
-    parts[1::2] = map(int, parts[1::2])
-    return parts
+#def numericalSort(value):
+#    parts = numbers.split(value)
+#    parts[1::2] = map(int, parts[1::2])
+#    return parts
 
-imgs = []
-for filename in sorted(glob.glob(os.path.join(img, '*.png')), key=numericalSort):
-    print(filename)
-    _imgs = cv2.imread(filename, 0)
-    imgs.append(_imgs)
+#imgs = []
+#for filename in sorted(glob.glob(os.path.join(img, '*.png')), key=numericalSort):
+#    print(filename)
+#    _imgs = cv2.imread(filename, 0)
+#    imgs.append(_imgs)
 
-temp = []
-for x in imgs:
-    temp.append(pad(x))
+#temp = []
+#for x in imgs:
+#    temp.append(pad(x))
 
-os.chdir(dst)
-i = 0
-for x in temp:
-    cv2.imwrite(str(i)+'.png', x)
-    i += 1
+#os.chdir(dst)
+#i = 0
+#for x in temp:
+#    cv2.imwrite(str(i)+'.png', x)
+#    i += 1

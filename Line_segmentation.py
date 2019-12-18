@@ -3,6 +3,7 @@ import numpy as np
 from newChar import get_characters
 from WordSegmentor import WordSegmentor
 from LineSegmentor import LineSegmentor
+from padding import pad
 
 def horizintal_projection(im):
     #im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -95,19 +96,21 @@ def segment_paragragh(lines, words):
     res = []
     for i in range(len(chars)):
         for j in range(len(chars[i])):
+            for k in range(len(chars[i][j])):
+                chars[i][j][k] = pad(chars[i][j][k])
+                
+    for i in range(len(chars)):
+        for j in range(len(chars[i])):
             res.append(chars[i][j])
-    #        for k in range(len(chars[i][j])):
-                # print('writing')
-    #            cv2.imwrite('test/l'+str(i)+'w'+str(j)+'c'+str(k)+'.png', chars[i][j][k])
 
     return res
  
 
-#def tempFunction():
-#    img = cv2.imread('image.png', 0)
-#    img = skew_correction(img)
-#    lines, lines_dil = LineSegmentor(img).segment_lines()
-#    words, length = WordSegmentor(lines, lines_dil).segment_words() 
-#    return segment_paragragh(lines, words)
+def tempFunction():
+    img = cv2.imread('image.png', 0)
+    img = skew_correction(img)
+    lines, lines_dil = LineSegmentor(img).segment_lines()
+    words, length = WordSegmentor(lines, lines_dil).segment_words() 
+    return segment_paragragh(lines, words)
 
-#tempFunction()
+tempFunction()
