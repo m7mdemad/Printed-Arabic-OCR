@@ -86,6 +86,6 @@ def segment_paragragh(lines, words):
 #	img = skew_correction(img)
 #	lines, lines_dil = LineSegmentor(img).segment_lines()
 #   words, length = WordSegmentor(lines, lines_dil).segment_words() 
-#	segment_paragragh(lines, words)
+#	return segment_paragragh(lines, words)
 
 #tempFunction()
