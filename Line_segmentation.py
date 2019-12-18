@@ -63,7 +63,7 @@ def get_words(lines):
     writer = 0
     for i in range(len(lines)):
         lines[i] = cv2.rotate(lines[i], cv2.ROTATE_90_COUNTERCLOCKWISE)
-        words = Trim(horizintal_projection(lines[i]), lines[i], 2, 5)   
+        words = Trim(horizintal_projection(lines[i]), lines[i], 1, 5)   
         for k in range(len(words)):
             words[k] = cv2.rotate(words[k], cv2.ROTATE_90_CLOCKWISE)
 
@@ -78,8 +78,9 @@ def get_words(lines):
 
 
 def segment_paragragh(img):
+    os.chdir('C:\\Users\\H S\\PycharmProjects\\arabic_ocr')
     # img = cv2.imread('image.png',0)
-    #img = skew_correction(img)
+    img = skew_correction(img)
     #  Extract Lines from text
     lines = Trim(horizintal_projection(img), img, 0, 15)
     
@@ -97,12 +98,12 @@ def segment_paragragh(img):
     for i in range(len(chars)):
         for j in range(len(chars[i])):
             res.append(chars[i][j])
-            for k in range(len(chars[i][j])):
+    #        for k in range(len(chars[i][j])):
                 # print('writing')
-                cv2.imwrite('test/l'+str(i)+'w'+str(j)+'c'+str(k)+'.png', chars[i][j][k])
+    #            cv2.imwrite('test/l'+str(i)+'w'+str(j)+'c'+str(k)+'.png', chars[i][j][k])
 
     return res
  
 
-img = cv2.imread('image.png',0)           
-segment_paragragh(img)
+# img = cv2.imread('image.png',0)           
+# segment_paragragh(img)

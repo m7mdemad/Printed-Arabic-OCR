@@ -7,9 +7,9 @@ from Line_segmentation import segment_paragragh
 
 
 
-img = 's'
-txt = 't'
-results_path = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\r'
+img = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\s'
+txt = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\t'
+results_path = 'C:\\Users\\H S\\PycharmProjects\\arabic_ocr\\test'
 
 
 def get_char(text_file):
@@ -17,7 +17,11 @@ def get_char(text_file):
     chars = [[] for i in range(len(words))]
     for i in range(0, len(words)):
         for j in range(0, len(words[i])):
-            chars[i].append(words[i][j])
+            if  j != 0 and words[i][j] == 'ا' and words[i][j - 1] == 'ل':
+                chars[i].pop()
+                chars[i].append('لا')
+            else:
+                chars[i].append(words[i][j])
     print(chars)
     return chars
 
@@ -39,8 +43,26 @@ def prepare_dataset(imgs, chars):
                 data.append([arr[i], chars[j][i]])
             j += 1
         else:
-            j += 1  # skip it.
-            count += 1
+            #return data
+            #j += 1  # skip it.
+            #count += 1
+            break
+        
+    k = len(imgs) - 1
+    j = len(chars) - 1
+    while k >= 0:
+        if j < 0:
+            break
+        if len(imgs[k]) == len(chars[j]):
+            for i in range(len(imgs[k])):
+                data.append([imgs[k][i], chars[j][i]])
+            j -= 1
+        else:
+            #return data
+            #j += 1  # skip it.
+            #count += 1
+            break
+        k -= 1
 
      #print('no. of errors= ', count)
     return data
@@ -51,10 +73,10 @@ def save_data(data, img):
 
     folders = ['alif', 'baa', 'taa', 'seh', 'jiim', 'haa', 'khaa', 'daal', 'zaal', 'raa', 'zeen', 'siin', 'shiin',
                'saad', 'daad', 'tah', 'zaa', 'een', 'ghin', 'faa', 'qaaf', 'kaaf', 'laam', 'miim', 'noon', 'heh', 'waaw', 'yaa',
-               'laamalif']
+               'laamalif','yaa2']
 
     letters = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق',
-               'ك', 'ل', 'م', 'ن', 'ه', 'و','ى','لا']
+               'ك', 'ل', 'م', 'ن', 'ه', 'و','ى','لا','ي']
 
     cnt = 0
     for el in data:
@@ -93,8 +115,8 @@ for filename in sorted(glob.glob(os.path.join(txt, '*.txt')), key=numericalSort)
         print(filename)
         text.append(_text)
 
-lt_txt = get_char(text[0])
-
-lt_img = segment_paragragh(imgs[0])
- #data = prepare_dataset(lt_img, lt_txt)
- #save_data(data,img)
+for i in range(len(text)):
+    lt_txt = get_char(text[i])
+    lt_img = segment_paragragh(imgs[i])
+    data = prepare_dataset(lt_img, lt_txt)
+    save_data(data,img)
