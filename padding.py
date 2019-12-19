@@ -8,7 +8,7 @@ def pad(img):
     if img.shape[0] > 50:
        img = cv2.resize(img, (img.shape[1], 50), interpolation=cv2.INTER_AREA)
        # return img
-    elif img.shape[1] > 50:
+    if img.shape[1] > 50:
         img = cv2.resize(img, (50, img.shape[0]), interpolation=cv2.INTER_AREA)
 
 
@@ -27,7 +27,7 @@ def pad(img):
         left=left,
         right=right,
         borderType=cv2.BORDER_CONSTANT,
-        value=[255]
+        value=255
     )
     return border
 
