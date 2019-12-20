@@ -106,11 +106,9 @@ def segment_paragragh(lines, words):
     return res
  
 
-def tempFunction():
-    img = cv2.imread('image.png', 0)
+def GetParagraph_chars(img):
     img = skew_correction(img)
     lines, lines_dil = LineSegmentor(img).segment_lines()
     words, length = WordSegmentor(lines, lines_dil).segment_words() 
     return segment_paragragh(lines, words)
 
-tempFunction()
