@@ -47,18 +47,18 @@ def get_words(lines):
         Lines_in_words.append(words)
 		
 		# for visualization
-        for j in range(len(words)):
-            name = 'w' + str(writer) + '.png'
-            cv2.imwrite(name, words[j])
-            writer += 1
+        # for j in range(len(words)):
+        #     name = 'w' + str(writer) + '.png'
+        #     cv2.imwrite(name, words[j])
+        #     writer += 1
 
 
-img = cv2.imread('image.png')
+#img = cv2.imread('image.png')
 #  Extract Lines from text
 # print(horizintal_projection( cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)))
 lines = Trim(horizintal_projection(img), img, 0, 15)
 #  Extract words from lines
-words = get_words(lines)
+#words = get_words(lines)
 
 
 

@@ -77,7 +77,7 @@ def get_line_info(line):
             max_indeces_list.append(start)
             
     max_indeces_list.sort()
-    print(max_indeces_list)
+    #print(max_indeces_list)
     
     
     bw_img_line[bl_line, 0:bw_img_line.shape[1]] = 255
@@ -101,7 +101,7 @@ def baseLine(hp):
 def max_transitions(img, bl):
     maxTransition = 0
     maxTransitionIndex = bl
-    print(img.shape[0],img.shape[1])
+    #print(img.shape[0],img.shape[1])
     for i in range(bl, 0, -1):
         currentTransition = 0
         flag = 0

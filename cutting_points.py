@@ -51,19 +51,19 @@ def cutting_points_identification(vp, word, mti, bl):
             MidIndex = int((EndIndex + StartIndex) / 2)
 
             if (comp(vp, 0, MidIndex, StartIndex, EndIndex, '==') != False):
-                print('cond1')
+               # print('cond1')
                 CutIndex = comp(vp, 0, MidIndex, StartIndex, EndIndex, '==')
             elif vp[MidIndex] == mfv:
-                print('cond2')
+                #print('cond2')
                 CutIndex = MidIndex
             elif (comp(vp, mfv, MidIndex, MidIndex, EndIndex, '<=') != False):
-                print('cond3')
+                #print('cond3')
                 CutIndex = comp(vp, mfv, MidIndex, MidIndex, EndIndex, '<=')
             elif (comp(vp, mfv, MidIndex, StartIndex, MidIndex, '<=') != False):
-                print('cond4')
+                #print('cond4')
                 CutIndex = comp(vp, mfv, MidIndex, StartIndex, MidIndex, '<=')
             else:
-                print('cond5')
+                #print('cond5')
                 CutIndex = MidIndex
 
             #print(StartIndex,' ', EndIndex,' ', MidIndex,' ', CutIndex)

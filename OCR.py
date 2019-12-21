@@ -2,9 +2,12 @@ import time
 import pickle
 import numpy as np
 from Line_segmentation import GetParagraph_chars
-import sys
-#import shutil
+import shutil
 import os
+import sys
+#sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
+import cv2
+from sklearn.preprocessing import StandardScaler
 def prepare_output(model_path,img_path):
   char_dic={'alif':'ا','baa':'ب','taa':'ت','seh':'ث','jiim':'ج','haa':'ح',
             'khaa':'خ',
@@ -38,14 +41,16 @@ def prepare_output(model_path,img_path):
         X= scaler.transform(X)
         chars_labels=NN_loaded.predict(X)
         chars2write.append(chars_labels)
-              
+        
+        
   end=time.time()
-  
-  if(!os.path.exists("Output")):
+  if(not(os.path.exists("Output"))):
       os.mkdir('Output')
       os.mkdir('Output/text')
-  img_name=img_path.split('/')[1].replace('.png','.txt')
+  img_name=img_path.split('/')[-1].replace('.png','.txt')
   outputfile='Output/text/'+img_name
+ 
+  
   with open(outputfile,'w') as f: 
       for i in range(0,len( chars2write)):
         for j in range(0,len(chars2write[i])):
@@ -53,17 +58,22 @@ def prepare_output(model_path,img_path):
         f.write(' ')
         if(i%8==0):
           f.write('\n')
+      print(outputfile+'done processing')
 
-  with open('run_time.txt','w') as f:
+  with open('Output/run_time.txt','a') as f:
       f.write(str(end-start)+'\n')
 
-def RunOCR(testfile,model_path='models/my_dumped_classifier.pkl',):
+
+ 
+
+def RunOCR(testfile):
   path=testfile
   tests=os.listdir(path)
+  
   for test in tests:
     image_path=path+'/'+test
-    print(image_path)
-    prepare_output(model_path,image_path)
+    prepare_output('models/my_dumped_classifier.pkl',image_path)
+
 
 
 if __name__ == "__main__":

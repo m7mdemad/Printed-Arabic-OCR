@@ -25,7 +25,7 @@ class Segmentor:
     def run_segmentor(self):
         lines, lines_dil = LineSegmentor(self.__gray_image).segment_lines()
         line_words = WordSegmentor(lines, lines_dil).segment_words()
-        print(f"lines count {len(line_words)}")
+        #print(f"lines count {len(line_words)}")
 
         self.__print_words(line_words)
         # CharSegmentor(line_words).segment_chars()

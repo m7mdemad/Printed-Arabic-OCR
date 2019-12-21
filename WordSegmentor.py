@@ -46,14 +46,14 @@ class WordSegmentor:
         line_words = []
         length = 0
         for line_idx, line in enumerate(self.__lines):
-            print(len(self.__lines), len(self.__lines_dil))
+            #print(len(self.__lines), len(self.__lines_dil))
             words = self.__segment_line(line, self.__lines_dil[line_idx])
             length += len(words)
             line_words.append(words)
 
-            for idx, word in enumerate(words):
-                cv2.imwrite(f'line{line_idx}-word{idx}.png', word)
-            cv2.imwrite(f'line{line_idx}.png', line)
+            #for idx, word in enumerate(words):
+               # cv2.imwrite(f'line{line_idx}-word{idx}.png', word)
+            #cv2.imwrite(f'line{line_idx}.png', line)
 
         return line_words, length
 

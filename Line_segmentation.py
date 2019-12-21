@@ -1,3 +1,5 @@
+import sys
+sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import cv2
 import numpy as np
 from newChar import get_characters
@@ -49,10 +51,10 @@ def get_words(lines):
         Lines_in_words.append(words)
 
         # for visualization
-        for j in range(len(words)):
-            name = 'w' + str(writer) + '.png'
-            cv2.imwrite(name, words[j])
-            writer += 1
+        # for j in range(len(words)):
+        #     name = 'w' + str(writer) + '.png'
+        #     cv2.imwrite(name, words[j])
+        #     writer += 1
     return Lines_in_words
 
 
