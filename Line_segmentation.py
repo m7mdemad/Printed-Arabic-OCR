@@ -102,17 +102,17 @@ def segment_paragragh(lines, words):
 
     
     chars = get_characters(lines, words)
-    res = []
-    for i in range(len(chars)):
-        for j in range(len(chars[i])):
-            for k in range(len(chars[i][j])):
-                chars[i][j][k] = pad(chars[i][j][k])
+    #res = []
+    #for i in range(len(chars)):
+     #   for j in range(len(chars[i])):
+      #      for k in range(len(chars[i][j])):
+       #         chars[i][j][k] = pad(chars[i][j][k])
                 
-    for i in range(len(chars)):
-        for j in range(len(chars[i])):
-            res.append(chars[i][j])
+    #for i in range(len(chars)):
+     #   for j in range(len(chars[i])):
+      #      res.append(chars[i][j])
 
-    return res
+    return chars
  
 
 def GetParagraph_chars(img):
