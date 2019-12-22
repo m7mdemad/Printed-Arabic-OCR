@@ -5,6 +5,7 @@ import os
 import re
 
 def pad(img):
+    #print(type(img),img.shape)
     if img.shape[0] > 50:
        img = cv2.resize(img, (img.shape[1], 50), interpolation=cv2.INTER_AREA)
        # return img

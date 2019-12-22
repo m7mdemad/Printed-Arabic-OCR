@@ -3,6 +3,7 @@ import numpy as np
 from skimage.morphology import skeletonize
 from cutting_points import cutting_points_identification
 from filter_cutting_points import filter_cutting_points
+import multiprocessing as mp
 
 def horizintal_projection(im):
     #im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -178,6 +179,19 @@ def get_chars2(blk, img, line, bl_line, maxTransitionIndex_line, bw_img_line, se
     #for i in range(len(chars)):
      #   str1 = 'c'+str(i)+'.png'
       #  cv2.imwrite(str1,chars[i])
+
+# def process_word(line_chars,word,line,bl_line, maxTransitionIndex_line, bw_img_line, second_peak):
+#     for j in range(0,len(word)):
+#         if(j<len(word)):
+#             blk = word[j]
+#             word = get_chars2(blk, word[j], line, bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
+#             line_chars.append(word[0])
+#             #print(word)
+#     return line_chars
+
+
+
+        
       
 def get_characters(lines, words):
     #original = cv2.imread('w47.png', 0)
@@ -187,17 +201,17 @@ def get_characters(lines, words):
     
     chars_list = []
     
-    #bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(lines[0])
-    #print(bl_line, maxTransitionIndex_line, bw_img_line, second_peak )
-    #word = get_chars2(words[0][0], lines[0], bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
-    #print(words[0][0].shape)
-    #print(lines[0].shape)
-    #x = lines[0]
-    #x[bl_line, 0:x.shape[1]] = 255
-    #cv2.imwrite('ziko.png', words[0][0])
+    # #bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(lines[0])
+    # #print(bl_line, maxTransitionIndex_line, bw_img_line, second_peak )
+    # #word = get_chars2(words[0][0], lines[0], bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
+    # #print(words[0][0].shape)
+    # #print(lines[0].shape)
+    # #x = lines[0]
+    # #x[bl_line, 0:x.shape[1]] = 255
+    # #cv2.imwrite('ziko.png', words[0][0])
     
     for i in range(len(lines)):
-        #if i > 2 and i < len(lines) - 2:
+        # if i > 2 and i < len(lines) - 2:
         #    continue
         bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(lines[i])
         line_chars = []
@@ -207,5 +221,31 @@ def get_characters(lines, words):
             line_chars.append(word)
 
         chars_list.append(line_chars)
-    
+
+        # pool = mp.Pool(processes=8)
+        # results = [pool.apply(thread_func, args=(lines[i], word,)) for word in words]
+        # chars_list.append(results[0])
+        # print(type(chars_list))
+        
     return chars_list
+
+def thread_func(line, word):
+        bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(line)
+        line_chars = []
+        for j in range(len(word)):
+            if(j<len(word)):
+                blk = word[j]
+                word = get_chars2(blk, word[j], line, bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
+                line_chars.append(word)
+        return line_chars
+
+def thread_func_2(lines,words):
+        #for i in range(len(lines)):
+            pool = mp.Pool(processes=4)
+            results = [pool.apply(thread_func, args=(line, word,)) for line, word in zip(lines,words)]
+            chars_list.append(results[0])
+            
+            return chars_list
+
+    
+    
