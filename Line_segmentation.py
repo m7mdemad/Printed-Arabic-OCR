@@ -14,6 +14,13 @@ def horizintal_projection(im):
     return projection
 
 
+def vertical_projection(im):
+    #im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    im = 255 - im  # invert
+    projection = np.sum(im, 0)  # Calculate horizontal projection
+    return projection
+
+
 def Trim(projection, image, tolerance, min_accepted):
     lines = []
     i = 0
