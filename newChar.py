@@ -206,6 +206,6 @@ def get_characters(lines, words):
             word = get_chars2(blk, words[i][j], lines[i], bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
             line_chars.append(word)
 
-        #chars_list.append(line_chars)
+        chars_list.append(line_chars)
     
-    return line_chars
+    return chars_list

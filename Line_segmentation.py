@@ -13,13 +13,11 @@ def horizintal_projection(im):
     projection = np.sum(im, 1)  # Calculate horizontal projection
     return projection
 
-
 def vertical_projection(im):
     #im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     im = 255 - im  # invert
     projection = np.sum(im, 0)  # Calculate horizontal projection
     return projection
-
 
 def Trim(projection, image, tolerance, min_accepted):
     lines = []
@@ -102,17 +100,17 @@ def segment_paragragh(lines, words):
 
     
     chars = get_characters(lines, words)
-    #res = []
-    #for i in range(len(chars)):
-     #   for j in range(len(chars[i])):
-      #      for k in range(len(chars[i][j])):
-       #         chars[i][j][k] = pad(chars[i][j][k])
+    res = []
+    for i in range(len(chars)):
+        for j in range(len(chars[i])):
+            for k in range(len(chars[i][j])):
+                chars[i][j][k] = pad(chars[i][j][k])
                 
-    #for i in range(len(chars)):
-     #   for j in range(len(chars[i])):
-      #      res.append(chars[i][j])
+    for i in range(len(chars)):
+        for j in range(len(chars[i])):
+            res.append(chars[i][j])
 
-    return chars
+    return res
  
 
 def GetParagraph_chars(img):
