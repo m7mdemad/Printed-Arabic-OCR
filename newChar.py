@@ -163,7 +163,7 @@ def get_chars2(blk, img, line, bl_line, maxTransitionIndex_line, bw_img_line, se
                 bw_img[i,j] = 255
             else:
                 bw_img[i,j] = 0
-    most_frequent_value_after_0, most_frequent_value, cutting_points = cutting_points_identification(vertical_projection(bw_img), bw_img, maxTransitionIndex, bl_line)
+    most_frequent_value_after_0, most_frequent_value, cutting_points = cutting_points_identification(vertical_projection(bw_img_line), bw_img, maxTransitionIndex, bl_line)
     # print( most_frequent_value_after_0, most_frequent_value)
 
     # filter cutting points
