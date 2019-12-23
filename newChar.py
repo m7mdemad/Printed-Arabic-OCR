@@ -4,6 +4,7 @@ from skimage.morphology import skeletonize
 from cutting_points import cutting_points_identification
 from filter_cutting_points import filter_cutting_points
 import multiprocessing as mp
+from padding import pad
 
 def horizintal_projection(im):
     #im = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -130,7 +131,7 @@ def cut_chars(blk, bw_img, valid_cutting_points, bl_line):
         swap = blk[0:blk.shape[0], valid_cutting_points[i+1][3]:valid_cutting_points[i][3]]
         #swap = cv2.resize(swap, (50, 50), interpolation=cv2.INTER_AREA)
 
-        chars.append(swap)
+        chars.append(pad(swap))
         
     #for i in range(len(chars)):
     #        chars[i] = cv2.resize(chars[i], (int(chars[i].shape[1]*100/220), int(chars[i].shape[0]*100/220)), interpolation=cv2.INTER_AREA)
@@ -163,7 +164,7 @@ def get_chars2(blk, img, line, bl_line, maxTransitionIndex_line, bw_img_line, se
                 bw_img[i,j] = 255
             else:
                 bw_img[i,j] = 0
-    most_frequent_value_after_0, most_frequent_value, cutting_points = cutting_points_identification(vertical_projection(bw_img_line), bw_img, maxTransitionIndex, bl_line)
+    most_frequent_value_after_0, most_frequent_value, cutting_points = cutting_points_identification(vertical_projection(bw_img), bw_img, maxTransitionIndex, bl_line)
     # print( most_frequent_value_after_0, most_frequent_value)
 
     # filter cutting points
@@ -209,25 +210,23 @@ def get_characters(lines, words):
     # #x = lines[0]
     # #x[bl_line, 0:x.shape[1]] = 255
     # #cv2.imwrite('ziko.png', words[0][0])
-    
+    line_chars = []
     for i in range(len(lines)):
-        # if i > 2 and i < len(lines) - 2:
-        #    continue
+       
         bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(lines[i])
-        line_chars = []
         for j in range(len(words[i])):
             blk = words[i][j]
             word = get_chars2(blk, words[i][j], lines[i], bl_line, maxTransitionIndex_line, bw_img_line, second_peak)
             line_chars.append(word)
 
-        chars_list.append(line_chars)
+        #chars_list.append(line_chars)
 
         # pool = mp.Pool(processes=8)
         # results = [pool.apply(thread_func, args=(lines[i], word,)) for word in words]
         # chars_list.append(results[0])
         # print(type(chars_list))
         
-    return chars_list
+    return line_chars
 
 def thread_func(line, word):
         bl_line, maxTransitionIndex_line, bw_img_line, second_peak = get_line_info(line)
