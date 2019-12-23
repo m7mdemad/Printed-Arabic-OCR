@@ -99,23 +99,23 @@ def segment_paragragh(lines, words):
     #  Extract letters from words
 
     
-    chars = get_characters(lines, words)
-    res = []
-    for i in range(len(chars)):
-        for j in range(len(chars[i])):
-            for k in range(len(chars[i][j])):
-                chars[i][j][k] = pad(chars[i][j][k])
+    # chars = get_characters(lines, words)
+    # res = []
+    # for i in range(len(chars)):
+      #   for j in range(len(chars[i])):
+        #     for k in range(len(chars[i][j])):
+          #       chars[i][j][k] = pad(chars[i][j][k])
                 
-    for i in range(len(chars)):
-        for j in range(len(chars[i])):
-            res.append(chars[i][j])
+    # for i in range(len(chars)):
+      #   for j in range(len(chars[i])):
+        #     res.append(chars[i][j])
 
-    return res
+    # return res
  
 
 def GetParagraph_chars(img):
     img = skew_correction(img)
     lines, lines_dil = LineSegmentor(img).segment_lines()
     words, length = WordSegmentor(lines, lines_dil).segment_words() 
-    return segment_paragragh(lines, words)
+    return get_characters(lines, words)
 
